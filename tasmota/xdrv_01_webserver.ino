@@ -436,6 +436,10 @@ const char HTTP_FORM_OTHER[] PROGMEM =
   "<b>" D_WEB_ADMIN_PASSWORD "</b><input type='checkbox' onclick='sp(\"wp\")'><br><input id='wp' type='password' placeholder='" D_WEB_ADMIN_PASSWORD "' value='" D_ASTERISK_PWD "'><br>"
   "<br>"
   "<input id='b1' type='checkbox'%s><b>" D_MQTT_ENABLE "</b><br>"
+  #ifdef USE_HUBITAT
+    // Hubitat: Additional button for Hubitat / SmartThings support
+    "<input id='h1' name='h1' type='checkbox'%s><b>" D_HUBITAT_SMARTTHINGS_ENABLE "</b><br/>"
+  #endif
   "<br>";
 
 const char HTTP_FORM_END[] PROGMEM =
@@ -1774,7 +1778,11 @@ void HandleOtherConfiguration(void)
   TemplateJson();
   char stemp[strlen(mqtt_data) +1];
   strlcpy(stemp, mqtt_data, sizeof(stemp));  // Get JSON template
-  WSContentSend_P(HTTP_FORM_OTHER, stemp, (USER_MODULE == Settings.module) ? " checked disabled" : "", (Settings.flag.mqtt_enabled) ? " checked" : "");  // SetOption3 - Enable MQTT
+  #ifdef USE_HUBITAT
+    WSContentSend_P(HTTP_FORM_OTHER, stemp, (USER_MODULE == Settings.module) ? " checked disabled" : "", (Settings.flag.mqtt_enabled) ? " checked" : "", (Settings.flag4.hubitat_enabled) ? " checked" : "");  // SetOption3 - Enable MQTT
+  #else
+    WSContentSend_P(HTTP_FORM_OTHER, stemp, (USER_MODULE == Settings.module) ? " checked disabled" : "", (Settings.flag.mqtt_enabled) ? " checked" : "");  // SetOption3 - Enable MQTT
+  #endif
 
   uint32_t maxfn = (devices_present > MAX_FRIENDLYNAMES) ? MAX_FRIENDLYNAMES : (!devices_present) ? 1 : devices_present;
 #ifdef USE_SONOFF_IFAN
@@ -1824,6 +1832,10 @@ void OtherSaveSettings(void)
   WebGetArg("wp", tmp, sizeof(tmp));
   strlcpy(Settings.web_password, (!strlen(tmp)) ? "" : (strchr(tmp,'*')) ? Settings.web_password : tmp, sizeof(Settings.web_password));
   Settings.flag.mqtt_enabled = WebServer->hasArg("b1");  // SetOption3 - Enable MQTT
+  #ifdef USE_HUBITAT
+    // Hubitat: Saves the variable "true or false" of whether the user has enabled Hubitat support
+    Settings.flag4.hubitat_enabled = WebServer->hasArg("h1");
+  #endif
 #ifdef USE_EMULATION
   WebGetArg("b2", tmp, sizeof(tmp));
   Settings.flag2.emulation = (!strlen(tmp)) ? 0 : atoi(tmp);

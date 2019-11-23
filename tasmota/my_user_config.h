@@ -82,7 +82,11 @@
 #define OTA_URL                "http://thehackbox.org/tasmota/release/tasmota.bin"  // [OtaUrl]
 
 // -- MQTT ----------------------------------------
-#define MQTT_USE               1                 // [SetOption3] Select default MQTT use (0 = Off, 1 = On)
+#ifndef USE_HUBITAT
+  #define MQTT_USE               1                 // [SetOption3] Select default MQTT use (0 = Off, 1 = On)
+#else
+  #define MQTT_USE               0                 // When using Hubitat this is a sensible default
+#endif
 
 #define MQTT_HOST              ""                // [MqttHost]
 #define MQTT_FINGERPRINT1      "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"  // [MqttFingerprint1]
@@ -131,7 +135,11 @@
 #define WEB_SERVER             2                 // [WebServer] Web server (0 = Off, 1 = Start as User, 2 = Start as Admin)
 #define WEB_PASSWORD           ""                // [WebPassword] Web server Admin mode Password for WEB_USERNAME (empty string = Disable)
 #define FRIENDLY_NAME          "Tasmota"         // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
-#define EMULATION              EMUL_NONE         // [Emulation] Select Belkin WeMo (single relay/light) or Hue Bridge emulation (multi relay/light) (EMUL_NONE, EMUL_WEMO or EMUL_HUE)
+#ifndef USE_HUBITAT
+  #define EMULATION              EMUL_NONE         // [Emulation] Select Belkin WeMo (single relay/light) or Hue Bridge emulation (multi relay/light) (EMUL_NONE, EMUL_WEMO or EMUL_HUE)
+#else
+  #define EMULATION              EMUL_HUE          // [Emulation] This is needed for Hubitat device discovery
+#endif
 
 // -- HTTP GUI Colors -----------------------------
 // HTML hex color codes. Only 3 and 6 digit hex string values are supported!! See https://www.w3schools.com/colors/colors_hex.asp
@@ -235,6 +243,15 @@
 #define ENERGY_RESOLUTION      3                 // [EnergyRes] Maximum number of decimals (0 - 5) showing energy usage in kWh
 #define CALC_RESOLUTION        3                 // [CalcRes] Maximum number of decimals (0 - 7) used in commands ADD, SUB, MULT and SCALE
 
+// -- Hubitat ---------------------------------
+#ifdef USE_HUBITAT
+  #define HUBITAT_USE            1               // Select default Hubitat use (0 = Off, 1 = On)
+  // Hubitat: Default value text for the Hubitat host ip address
+  #define HUBITAT_HOST           ""              // [HubitatHost]
+  // Hubitat: Default value text for the Hubitat host port number
+  #define HUBITAT_PORT           39501           // [HubitatPort] Hubitat port (39500 for SmartThings)
+#endif
+
 /*********************************************************************************************\
  * END OF SECTION 1
  *
@@ -279,13 +296,19 @@
 #define MQTT_CLEAN_SESSION   1                   // Mqtt clean session connection (0 = No clean session, 1 = Clean session (default))
 
 // -- MQTT - Domoticz -----------------------------
-#define USE_DOMOTICZ                             // Enable Domoticz (+6k code, +0.3k mem)
-  #define DOMOTICZ_IN_TOPIC    "domoticz/in"     // Domoticz Input Topic
-  #define DOMOTICZ_OUT_TOPIC   "domoticz/out"    // Domoticz Output Topic
+// Hubitat: Disabling features not needed when running Hubitat
+#ifndef USE_HUBITAT                              
+  #define USE_DOMOTICZ                             // Enable Domoticz (+6k code, +0.3k mem)
+    #define DOMOTICZ_IN_TOPIC    "domoticz/in"     // Domoticz Input Topic
+    #define DOMOTICZ_OUT_TOPIC   "domoticz/out"    // Domoticz Output Topic
+#endif
 
 // -- MQTT - Home Assistant Discovery -------------
-#define USE_HOME_ASSISTANT                       // Enable Home Assistant Discovery Support (+7k code)
-  #define HOME_ASSISTANT_DISCOVERY_PREFIX "homeassistant"  // Home Assistant discovery prefix
+// Hubitat: Disabling features not needed when running Hubitat
+#ifndef USE_HUBITAT                              
+  #define USE_HOME_ASSISTANT                       // Enable Home Assistant Discovery Support (+7k code)
+    #define HOME_ASSISTANT_DISCOVERY_PREFIX "homeassistant"  // Home Assistant discovery prefix
+#endif 
 
 // -- MQTT - TLS - AWS IoT ------------------------
 // Using TLS starting with version v6.5.0.16 compilation will only work using Core 2.4.2 and 2.5.2. No longer supported: 2.3.0
@@ -300,7 +323,10 @@
 
 // -- KNX IP Protocol -----------------------------
 //#define USE_KNX                                  // Enable KNX IP Protocol Support (+9.4k code, +3k7 mem)
+// Hubitat: Disabling features not needed when running Hubitat
+#ifndef USE_HUBITAT                              
   #define USE_KNX_WEB_MENU                       // Enable KNX WEB MENU (+8.3k code, +144 mem)
+#endif
 
 // -- HTTP ----------------------------------------
 #define USE_WEBSERVER                            // Enable web server and Wifi Manager (+66k code, +8k mem)
@@ -317,10 +343,12 @@
   #define MQTT_HOST_DISCOVERY                    // Find MQTT host server (overrides MQTT_HOST if found)
 
 // -- Time ----------------------------------------
-#define USE_TIMERS                               // Add support for up to 16 timers (+2k2 code)
-  #define USE_TIMERS_WEB                         // Add timer webpage support (+4k5 code)
-  #define USE_SUNRISE                            // Add support for Sunrise and sunset tools (+16k)
-    #define SUNRISE_DAWN_ANGLE DAWN_NORMAL       // Select desired Dawn Angle from (DAWN_NORMAL, DAWN_CIVIL, DAWN_NAUTIC, DAWN_ASTRONOMIC)
+#ifndef USE_HUBITAT
+  #define USE_TIMERS                               // Add support for up to 16 timers (+2k2 code)
+    #define USE_TIMERS_WEB                         // Add timer webpage support (+4k5 code)
+    #define USE_SUNRISE                            // Add support for Sunrise and sunset tools (+16k)
+      #define SUNRISE_DAWN_ANGLE DAWN_NORMAL       // Select desired Dawn Angle from (DAWN_NORMAL, DAWN_CIVIL, DAWN_NAUTIC, DAWN_ASTRONOMIC)
+#endif
 
 // -- Rules or Script  ----------------------------
 // Select none or only one of the below defines
@@ -345,7 +373,10 @@
 #define USE_BUZZER                               // Add support for a buzzer (+0k6 code)
 #define USE_ARILUX_RF                            // Add support for Arilux RF remote controller (+0k8 code, 252 iram (non 2.3.0))
 //#define USE_SHUTTER                              // Add Shutter support for up to 4 shutter with different motortypes (+6k code)
-#define USE_DEEPSLEEP                            // Add support for deepsleep (+1k code)
+// Hubitat: Disabling features not needed when running Hubitat
+#ifndef USE_HUBITAT
+  #define USE_DEEPSLEEP                            // Add support for deepsleep (+1k code)
+#endif
 //#define USE_EXS_DIMMER                           // Add support for ES-Store WiFi Dimmer (+1k5 code)
 //  #define EXS_MCU_CMNDS                            // Add command to send MCU commands (+0k8 code)
 

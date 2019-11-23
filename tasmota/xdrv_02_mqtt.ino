@@ -355,6 +355,13 @@ void MqttPublishDirect(const char* topic, bool retained)
   sretained[0] = '\0';
   snprintf_P(slog_type, sizeof(slog_type), PSTR(D_LOG_RESULT));
 
+  #ifdef USE_HUBITAT
+    // Hubitat: Simple method to publish status to Hubitat. This can probably be done in the Hubitat driver, but doing it here for simplicity
+    if (Settings.flag4.hubitat_enabled) {
+      hubitatPublish();
+    }
+  #endif
+
   if (Settings.flag.mqtt_enabled) {  // SetOption3 - Enable MQTT
     if (MqttIsConnected()) {
       if (MqttPublishLib(topic, retained)) {
