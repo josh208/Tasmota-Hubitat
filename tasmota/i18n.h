@@ -456,6 +456,10 @@
 #define D_CMND_LATITUDE "Latitude"
 #define D_CMND_LONGITUDE "Longitude"
 
+// Hubitat: Commands xdrv_95_hubitat_smartthings.ino
+#define D_CMND_HUBITATHOST "HubitatHost"
+#define D_CMND_HUBITATPORT "HubitatPort"
+
 // Commands xdrv_16_tuyadimmer.ino
 
 #define D_CMND_TUYA_MCU "TuyaMCU"

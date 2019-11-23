@@ -246,6 +246,8 @@
 #define D_CONFIGURE_MODULE "Configure Module"
 #define D_CONFIGURE_WIFI "Configure WiFi"
 #define D_CONFIGURE_MQTT "Configure MQTT"
+// Hubitat: Button text for main configuration text
+#define D_CONFIGURE_HUBITAT "Configure Hubitat / SmartThings"
 #define D_CONFIGURE_DOMOTICZ "Configure Domoticz"
 #define D_CONFIGURE_LOGGING "Configure Logging"
 #define D_CONFIGURE_OTHER "Configure Other"
@@ -280,6 +282,8 @@
 #define D_AP2_PASSWORD "AP2 Password"
 
 #define D_MQTT_PARAMETERS "MQTT parameters"
+// Hubitat: Title for Hubitat / SmartThings configuration page
+#define D_HUBITAT_PARAMETERS "Hubitat / SmartThings parameters"
 #define D_CLIENT "Client"
 #define D_FULL_TOPIC "Full Topic"
 
@@ -298,6 +302,8 @@
 #define D_ACTIVATE "Activate"
 #define D_WEB_ADMIN_PASSWORD "Web Admin Password"
 #define D_MQTT_ENABLE "MQTT enable"
+// Hubitat: Checkbox text for "Configure Other" page
+#define D_HUBITAT_SMARTTHINGS_ENABLE "Hubitat / SmartThings enable"
 #define D_FRIENDLY_NAME "Friendly Name"
 #define D_BELKIN_WEMO "Belkin WeMo"
 #define D_HUE_BRIDGE "Hue Bridge"

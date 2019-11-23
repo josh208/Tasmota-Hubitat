@@ -132,7 +132,12 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t spare28 : 1;
     uint32_t spare29 : 1;
     uint32_t spare30 : 1;
-    uint32_t spare31 : 1;
+    #ifdef USE_HUBITAT
+      // Hubitat: Variable to specify whether Hubitat is enabled. Choosing last spare in case Tasmota adds more variables.
+      uint32_t hubitat_enabled : 1;
+    #else
+      uint32_t spare31 : 1;
+    #endif
   };
 } SysBitfield4;
 
@@ -470,7 +475,17 @@ struct SYSCFG {
   uint8_t       mqttlog_level;             // F01
   uint8_t       sps30_inuse_hours;         // F02
 
-  uint8_t       free_f03[233];             // F03
+  #ifdef USE_HUBITAT
+    // Hubitat: Using some free space for Hubitat
+    uint8_t       free_ea6[128];           // EA6 + 0x80
+
+    // Hubitat: settings structure place holder for Hubitat settings
+    char          hubitat_host[34];        // F26 + 0x22 (an uneven number of chars will make the config invalid due to misalignment)
+    uint16_t      hubitat_port;            // F48 + 0x2
+    uint8_t       free_f48[162];           // F4A + 0xA2
+  #else
+    uint8_t       free_ea6[326];           // EA6 + 0x146
+  #endif
 
   uint32_t      i2c_drivers[3];            // FEC I2cDriver
   uint32_t      cfg_timestamp;             // FF8
