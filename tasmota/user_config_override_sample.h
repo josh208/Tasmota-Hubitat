@@ -68,6 +68,19 @@ Examples :
 #undef  MQTT_PASS
 #define MQTT_PASS         "YourMqttPass"         // [MqttPassword] Optional password
 
+// -- Setup your own Hubitat settings  ---------------
+#ifdef USE_HUBITAT
+  #undef  HUBITAT_USE
+  #define HUBITAT_USE     1               // Select default Hubitat use (0 = Off, 1 = On)
+  
+  #undef  HUBITAT_HOST
+  #define HUBITAT_HOST    ""              // [HubitatHost]
+
+  #undef  HUBITAT_PORT
+  #define HUBITAT_PORT    39501           // [HubitatPort] Hubitat port (39500 for SmartThings)
+#endif
+
+
 // You might even pass some parameters from the command line ----------------------------
 // Ie:  export PLATFORMIO_BUILD_FLAGS='-DUSE_CONFIG_OVERRIDE -DMY_IP="192.168.1.99" -DMY_GW="192.168.1.1" -DMY_DNS="192.168.1.1"'
 

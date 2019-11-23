@@ -64,12 +64,22 @@ String HueSerialnumber(void)
   String serial = WiFi.macAddress();
   serial.replace(":", "");
   serial.toLowerCase();
-  return serial;  // 5ccf7f139f3d
+  #ifdef USE_HUBITAT
+    // Hubitat: some UUID changes because hubitat isn't responding correctly to M-SEARCH
+    return serial.substring(6);
+  #else
+    return serial;  // 5ccf7f139f3d
+  #endif
 }
 
 String HueUuid(void)
 {
-  String uuid = F("f6543a06-da50-11ba-8d8f-");
+  #ifdef USE_HUBITAT
+    // Hubitat: Returning different uuid
+    String uuid = F("38323636-4558-4dda-9188-cda0e6");
+  #else
+    String uuid = F("f6543a06-da50-11ba-8d8f-");
+  #endif
   uuid += HueSerialnumber();
   return uuid;  // f6543a06-da50-11ba-8d8f-5ccf7f139f3d
 }
@@ -109,7 +119,7 @@ void HueRespondToMSearch(void)
 /*********************************************************************************************\
  * Hue web server additions
 \*********************************************************************************************/
-
+// Hubitat: modified for Hubitat / SmartThings detection
 const char HUE_DESCRIPTION_XML[] PROGMEM =
   "<?xml version=\"1.0\"?>"
   "<root xmlns=\"urn:schemas-upnp-org:device-1-0\">"
@@ -121,11 +131,21 @@ const char HUE_DESCRIPTION_XML[] PROGMEM =
   "<URLBase>http://{x1:80/</URLBase>"
   "<device>"
     "<deviceType>urn:schemas-upnp-org:device:Basic:1</deviceType>"
+#ifdef USE_HUBITAT
+    "<friendlyName>{x4</friendlyName>"
+    "<presentationURL>index.html</presentationURL>"
+    "<manufacturer>iTead</manufacturer>"
+    "<manufacturerURL>http://smartlife.tech</manufacturerURL>"
+    "<modelDescription>iTead Intelligent Systems Co., LTD</modelDescription>"
+    "<modelName>{x4</modelName>"
+    "<modelURL>http://smartlife.tech</modelURL>"
+#else
     "<friendlyName>Amazon-Echo-HA-Bridge ({x1)</friendlyName>"
 //    "<friendlyName>Philips hue ({x1)</friendlyName>"
     "<manufacturer>Royal Philips Electronics</manufacturer>"
     "<modelDescription>Philips hue Personal Wireless Lighting</modelDescription>"
     "<modelName>Philips hue bridge 2012</modelName>"
+#endif
     "<modelNumber>929000226503</modelNumber>"
     "<serialNumber>{x3</serialNumber>"
     "<UDN>uuid:{x2</UDN>"
@@ -193,6 +213,7 @@ String GetHueUserId(void)
   return String(userid);
 }
 
+// Hubitat: modified for Hubitat / SmartThings detection
 void HandleUpnpSetupHue(void)
 {
   AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, PSTR(D_HUE_BRIDGE_SETUP));
@@ -200,6 +221,10 @@ void HandleUpnpSetupHue(void)
   description_xml.replace("{x1", WiFi.localIP().toString());
   description_xml.replace("{x2", HueUuid());
   description_xml.replace("{x3", HueSerialnumber());
+  #ifdef USE_HUBITAT
+    // Hubitat: New Method of obtaining module name
+    description_xml.replace("{x4", ModuleName().c_str()?ModuleName().c_str():"Sonoff");
+  #endif
   WSSend(200, CT_XML, description_xml);
 }
 
@@ -811,7 +836,9 @@ bool Xdrv20(uint8_t function)
 {
   bool result = false;
 
-#ifdef USE_SCRIPT_HUE
+// Hubitat: Also enable this for Hubitat
+#if defined(USE_SCRIPT_HUE) || defined(USE_HUBITAT)
+  // This enables description.xml even when there isn't a controllable device (such as for the Sonoff SC or Bridge)
   if ((EMUL_HUE == Settings.flag2.emulation)) {
 #else
   if (devices_present && (EMUL_HUE == Settings.flag2.emulation)) {

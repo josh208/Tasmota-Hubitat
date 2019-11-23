@@ -898,6 +898,11 @@ void SettingsDefaultSet2(void)
   Settings.tele_period = TELE_PERIOD;
   Settings.mqttlog_level = MQTT_LOG_LEVEL;
 
+  // Hubitat
+  #ifdef USE_HUBITAT
+    Settings.flag4.hubitat_enabled = HUBITAT_USE;
+  #endif
+
   // Energy
   Settings.flag2.current_resolution = 3;
 //  Settings.flag2.voltage_resolution = 0;
