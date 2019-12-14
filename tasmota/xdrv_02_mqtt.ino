@@ -331,7 +331,8 @@ void MqttPublishDirect(const char* topic, bool retained)
   snprintf_P(slog_type, sizeof(slog_type), PSTR(D_LOG_RESULT));
 
   #ifdef USE_HUBITAT
-    // Hubitat: Simple method to publish status to Hubitat. This can probably be done in the Hubitat driver, but doing it here for simplicity
+    // Hubitat: Simple method to publish status to Hubitat. This can probably be done in the Hubitat driver, but doing it here for simplicity.
+    // Hubitat: Due to the number of routes into this function, this is probably the cleanest location to put this call.
     if (Settings.flag4.hubitat_enabled) {
       hubitatPublish();
     }
