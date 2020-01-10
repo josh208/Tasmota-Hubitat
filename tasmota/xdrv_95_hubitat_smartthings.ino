@@ -65,7 +65,7 @@ boolean hubitatPublish() {
                  "Host: " + host + ":" + port + "\r\n" + authHeader +
                  "Content-Type: application/json;charset=utf-8\r\n" +
                  "Content-Length: " + message.length() + "\r\n" +
-                 "Server: Sonoff\r\n" +
+                 "Server: Tasmota\r\n" +
                  "Connection: close\r\n\r\n" +
                  message + "\r\n");
 
