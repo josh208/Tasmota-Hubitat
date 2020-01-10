@@ -128,7 +128,7 @@ void HandleHubitatConfiguration(void)
     return;
   }
 
-  char str[sizeof(Settings.mqtt_client)];
+  char str[sizeof(Settings.ex_mqtt_client)];
 
   WSContentStart_P(S_CONFIGURE_HUBITAT);
   WSContentSendStyle();
