@@ -18,6 +18,9 @@ git rebase [branch-name]
 
 For the complete Changelog, see RELEASENOTES.md.
 
+### Version 8.1.0 Doris (Hubitat related changes)
+- Added Hubitat support
+
 ### Version 7.2.0 Constance (Hubitat related changes)
 - Added Hubitat support
 
