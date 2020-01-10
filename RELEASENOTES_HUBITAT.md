@@ -10,9 +10,16 @@ This fork adds Hubitat support to Tasmota. The original Hubitat fork of Tasmota 
 
 To keep this fork in-sync with the original Tasmota, firstly the Hubitat changes are kept in its own branch and then "git rebase master" is used against the original Tasmota.
 
+Commands used:
+git fetch upstream
+git rebase [branch-name]
+
 ## Changelog
 
 For the complete Changelog, see RELEASENOTES.md.
+
+### Version 7.2.0 Constance (Hubitat related changes)
+- Added Hubitat support
 
 ### Version 7.1.0 Betty (Hubitat related changes)
 
