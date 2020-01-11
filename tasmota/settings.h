@@ -476,15 +476,15 @@ struct SYSCFG {
   uint8_t       sps30_inuse_hours;         // F02
 
   #ifdef USE_HUBITAT
-    // Hubitat: Using some free space for Hubitat
-    uint8_t       free_ea6[128];           // EA6 + 0x80
+    // Hubitat: Using some free space for Hubitat, make sure the size of Settings don't change!
+    uint8_t       free_f03[128];           // F03 + 0x80
 
     // Hubitat: settings structure place holder for Hubitat settings
-    char          hubitat_host[34];        // F26 + 0x22 (an uneven number of chars will make the config invalid due to misalignment)
-    uint16_t      hubitat_port;            // F48 + 0x2
-    uint8_t       free_f48[162];           // F4A + 0xA2
+    char          hubitat_host[33];        // F83 + 0x21
+    uint16_t      hubitat_port;            // FA4 + 0x2
+    uint8_t       free_fa4[70];            // FA6 + 0x46
   #else
-    uint8_t       free_ea6[326];           // EA6 + 0x146
+    uint8_t       free_f03[233];           // F03
   #endif
 
   uint32_t      i2c_drivers[3];            // FEC I2cDriver
