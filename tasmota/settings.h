@@ -475,9 +475,9 @@ struct SYSCFG {
     uint8_t       free_f03[128];           // F03 + 0x80
 
     // Hubitat: settings structure place holder for Hubitat settings
-    char          hubitat_host[33];        // F83 + 0x22 (an uneven number of chars will make the config invalid due to misalignment)
-    uint16_t      hubitat_port;            // FA5 + 0x2
-    uint8_t       free_fa7[70];           // FA7 + 0x45
+    char          hubitat_host[33];        // F83 + 0x21
+    uint16_t      hubitat_port;            // FA4 + 0x2
+    uint8_t       free_fa4[70];           // FA6 + 0x46
   #else
     uint8_t       free_f03[233];           // F03
   #endif
