@@ -455,12 +455,13 @@ const char HTTP_FORM_OTHER[] PROGMEM =
   "<label><b>" D_WEB_ADMIN_PASSWORD "</b><input type='checkbox' onclick='sp(\"wp\")'></label><br><input id='wp' type='password' placeholder='" D_WEB_ADMIN_PASSWORD "' value='" D_ASTERISK_PWD "'><br>"
   "<br>"
   "<label><input id='b1' type='checkbox'%s><b>" D_MQTT_ENABLE "</b></label><br>"
+  #ifdef USE_HUBITAT
+    // Hubitat: Additional button for Hubitat support
+    "<label><input id='h1' name='h1' type='checkbox'%s><b>" D_HUBITAT_SMARTTHINGS_ENABLE "</b></label><br/>"
+  #endif
   "<br>"
   "<label><b>" D_DEVICE_NAME "</b> (%s)</label><br><input id='dn' placeholder='' value='%s'><br>"
-  #ifdef USE_HUBITAT
-    // Hubitat: Additional button for Hubitat / SmartThings support
-    "<input id='h1' name='h1' type='checkbox'%s><b>" D_HUBITAT_SMARTTHINGS_ENABLE "</b><br/>"
-  #endif
+  
   "<br>";
 
 const char HTTP_FORM_END[] PROGMEM =
@@ -2060,7 +2061,7 @@ void OtherSaveSettings(void)
   Settings.flag.mqtt_enabled = Webserver->hasArg("b1");  // SetOption3 - Enable MQTT
   #ifdef USE_HUBITAT
     // Hubitat: Saves the variable "true or false" of whether the user has enabled Hubitat support
-    Settings.flag4.hubitat_enabled = WebServer->hasArg("h1");
+    Settings.flag4.hubitat_enabled = Webserver->hasArg("h1");
   #endif
 #ifdef USE_EMULATION
   UdpDisconnect();

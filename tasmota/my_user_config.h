@@ -44,7 +44,7 @@
 \*********************************************************************************************/
 
 // -- Master parameter control --------------------
-#define CFG_HOLDER             4617              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
+#define CFG_HOLDER             4618              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
 
 // -- Project -------------------------------------
 #define PROJECT                "tasmota"         // PROJECT is used as the default topic delimiter
@@ -315,7 +315,7 @@
 
 // -- Hubitat ---------------------------------
 #ifdef USE_HUBITAT
-  #define HUBITAT_USE            1               // Select default Hubitat use (0 = Off, 1 = On)
+  #define HUBITAT_USE            true               // Select default Hubitat use (0 = Off, 1 = On)
   // Hubitat: Default value text for the Hubitat host ip address
   #define HUBITAT_HOST           ""              // [HubitatHost]
   // Hubitat: Default value text for the Hubitat host port number
@@ -700,7 +700,7 @@
 //  #define USE_ALECTO_V2                          // Add support for decoding Alecto V2 sensors like ACH2010, WS3000 and DKW2012 weather stations using 868MHz RF sensor receiver (+1k7 code)
 
 //#define USE_HRE                                  // Add support for Badger HR-E Water Meter (+1k4 code)
-//#define USE_A4988_STEPPER                        // Add support for A4988/DRV8825 stepper-motor-driver-circuit (+10k5 code)
+#define USE_A4988_STEPPER                        // Add support for A4988/DRV8825 stepper-motor-driver-circuit (+10k5 code)
 
 // -- Thermostat control ----------------------------
 //#define USE_THERMOSTAT                           // Add support for Thermostat

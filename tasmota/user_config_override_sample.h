@@ -51,13 +51,17 @@ Examples :
 // -- Setup your own Wifi settings  ---------------
 #undef  STA_SSID1
 #define STA_SSID1         "YourSSID"             // [Ssid1] Wifi SSID
-
 #undef  STA_PASS1
 #define STA_PASS1         "YourWifiPassword"     // [Password1] Wifi password
 
+#undef  STA_SSID2
+#define STA_SSID2         ""                     // [Ssid2] Optional alternate AP Wifi SSID
+#undef  STA_PASS2
+#define STA_PASS2         ""                     // [Password2] Optional alternate AP Wifi password
+
 // -- Setup your own MQTT settings  ---------------
 #undef  MQTT_HOST
-#define MQTT_HOST         "your-mqtt-server.com" // [MqttHost]
+#define MQTT_HOST         "your-mqtt-server" // [MqttHost]
 
 #undef  MQTT_PORT
 #define MQTT_PORT         1883                   // [MqttPort] MQTT port (10123 on CloudMQTT)
@@ -71,13 +75,16 @@ Examples :
 // -- Setup your own Hubitat settings  ---------------
 #ifdef USE_HUBITAT
   #undef  HUBITAT_USE
-  #define HUBITAT_USE     1               // Select default Hubitat use (0 = Off, 1 = On)
+  #define HUBITAT_USE     true               // Select default Hubitat use (0 = Off, 1 = On)
   
   #undef  HUBITAT_HOST
   #define HUBITAT_HOST    ""              // [HubitatHost]
 
   #undef  HUBITAT_PORT
   #define HUBITAT_PORT    39501           // [HubitatPort] Hubitat port (39500 for SmartThings)
+
+  #define USE_EXPRESSION                         // Add support for expression evaluation in rules (+3k2 code, +64 bytes mem)
+  #define SUPPORT_IF_STATEMENT                 // Add support for IF statement in rules (+4k2 code, -332 bytes mem)
 #endif
 
 

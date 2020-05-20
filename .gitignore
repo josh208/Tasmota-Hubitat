@@ -9,6 +9,7 @@
 .gcc-flags.json
 .cache
 tasmota/user_config_override.h
+/tasmota/user_config_override_*.h
 build
 build_output
 firmware.map
@@ -26,3 +27,4 @@ platformio_tasmota_cenv.ini
 .vscode/launch.json
 *.bak
 *.code-workspace
+

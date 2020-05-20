@@ -122,7 +122,7 @@ void HandleHubitatConfiguration(void)
   
   AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, S_CONFIGURE_HUBITAT);
 
-  if (WebServer->hasArg("save")) {
+  if (Webserver->hasArg("save")) {
     HubitatSaveSettings();
     WebRestart(1);
     return;
@@ -236,6 +236,13 @@ bool Xdrv95(uint8_t function)
         SSDP.setManufacturer("Smart Life Automated");
         SSDP.setManufacturerURL("http://smartlife.tech");
         SSDP.begin();
+        if (!strlen(Settings.hubitat_host)) {
+          strlcpy(Settings.hubitat_host, HUBITAT_HOST, sizeof(Settings.hubitat_host));
+          //Settings.hubitat_host = HUBITAT_HOST;
+        }
+        if (!Settings.hubitat_port) {
+          Settings.hubitat_port = HUBITAT_PORT;
+        }
       break;
       case FUNC_LOOP:
         break;
@@ -246,7 +253,7 @@ bool Xdrv95(uint8_t function)
         WSContentSend_P(HTTP_BTN_MENU_HUBITAT);
         break;
       case FUNC_WEB_ADD_HANDLER:
-        WebServer->on("/" WEB_HANDLE_HUBITAT, HandleHubitatConfiguration);
+        Webserver->on("/" WEB_HANDLE_HUBITAT, HandleHubitatConfiguration);
         break;
 #endif  // USE_WEBSERVER
     }

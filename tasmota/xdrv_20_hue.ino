@@ -888,7 +888,7 @@ bool Xdrv20(uint8_t function)
 
 // This enables description.xml even when there isn't a controllable device (such as for the Sonoff SC or Bridge)
 // Hubitat: Also enable this for Hubitat
-#if defined(USE_SCRIPT_HUE) || defined(USE_ZIGBEE || defined(USE_HUBITAT)
+#if defined(USE_SCRIPT_HUE) || defined(USE_ZIGBEE) || defined(USE_HUBITAT)
   if ((EMUL_HUE == Settings.flag2.emulation)) {
 #else
   if (devices_present && (EMUL_HUE == Settings.flag2.emulation)) {

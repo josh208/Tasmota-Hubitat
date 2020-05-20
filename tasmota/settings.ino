@@ -864,7 +864,7 @@ void SettingsDefaultSet2(void)
 
   // Hubitat
   #ifdef USE_HUBITAT
-    Settings.flag4.hubitat_enabled = HUBITAT_USE;
+    flag4.hubitat_enabled = HUBITAT_USE;
   #endif
 
   // Energy
