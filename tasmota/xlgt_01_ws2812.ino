@@ -37,7 +37,7 @@
 
 #define XLGT_01             1
 
-const uint8_t WS2812_SCHEMES = 8;      // Number of WS2812 schemes
+const uint8_t WS2812_SCHEMES = 9;      // Number of WS2812 schemes
 
 const char kWs2812Commands[] PROGMEM = "|"  // No prefix
   D_CMND_LED "|" D_CMND_PIXELS "|" D_CMND_ROTATION "|" D_CMND_WIDTH ;
@@ -220,6 +220,55 @@ void Ws2812Clock(void)
     }
   }
 
+  Ws2812StripShow();
+}
+
+void Ws2812Split(void)
+{
+  strip->ClearTo(0); // Reset strip
+  int stripsize = (int)Settings.light_pixels;
+  int stripsizeadj = stripsize - 1;
+
+  int uneven = 0;
+
+  WsColor part1_color = { Settings.ws_color[WS_SECOND][WS_RED], Settings.ws_color[WS_SECOND][WS_GREEN], Settings.ws_color[WS_SECOND][WS_BLUE] };
+  WsColor part2_color = { Settings.ws_color[WS_MINUTE][WS_RED], Settings.ws_color[WS_MINUTE][WS_GREEN], Settings.ws_color[WS_MINUTE][WS_BLUE] };
+
+  if( stripsize % 2 == 1 ) {
+    uneven = 1;
+  }
+
+  int halfstrip = (stripsizeadj + 1) / 2;
+
+  int part1 = Settings.light_rotation;
+  
+  if(part1 > halfstrip) {
+    part1 = halfstrip;
+  }
+  if (Settings.flag.ws_clock_reverse) {  // SetOption16 - Switch between clockwise or counter-clockwise
+    //Reverse everything
+    part1 = halfstrip - part1;
+  }
+  
+  int part2 = halfstrip - part1;
+  if (uneven == 1) {
+    if(part1 == halfstrip) {
+      Ws2812UpdatePixelColor(halfstrip, part1_color, 1);
+    } else {
+      Ws2812UpdatePixelColor(halfstrip, part2_color, 1);
+    }
+  }
+  
+  float offset = 1;
+  for (uint32_t h = 0; h < part1; h++) {
+    Ws2812UpdatePixelColor(stripsizeadj -h, part1_color, offset);
+    Ws2812UpdatePixelColor(h, part1_color, offset);
+  }
+  for (uint32_t h = 0; h < part2; h++) {
+    Ws2812UpdatePixelColor(halfstrip +h + uneven, part2_color, offset);
+    Ws2812UpdatePixelColor(halfstrip -h -1, part2_color, offset);
+  }
+  
   Ws2812StripShow();
 }
 
@@ -433,6 +482,12 @@ void Ws2812ShowScheme(void)
     case 0:  // Clock
       if ((1 == state_250mS) || (Ws2812.show_next)) {
         Ws2812Clock();
+        Ws2812.show_next = 0;
+      }
+      break;
+    case 8:
+      if ((1 == state_250mS) || (Ws2812.show_next)) {
+        Ws2812Split();
         Ws2812.show_next = 0;
       }
       break;

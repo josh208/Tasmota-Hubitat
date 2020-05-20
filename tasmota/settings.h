@@ -132,7 +132,12 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t spare28 : 1;
     uint32_t spare29 : 1;
     uint32_t spare30 : 1;
-    uint32_t spare31 : 1;                  // bit 31
+    #ifdef USE_HUBITAT
+      // Hubitat: Variable to specify whether Hubitat is enabled. Choosing last spare in case Tasmota adds more variables.
+      uint32_t hubitat_enabled : 1;
+    #else
+      uint32_t spare31 : 1;
+    #endif
   };
 } SysBitfield4;
 
@@ -409,7 +414,7 @@ struct {
   uint8_t       module;                    // 474
   uint8_t       ws_color[4][3];            // 475
   uint8_t       ws_width[3];               // 481
-
+  
 #ifdef ESP8266
   myio          my_gp;                     // 484 - 17 bytes (ESP8266)
 #else  // ESP32
@@ -466,7 +471,7 @@ struct {
   uint16_t      mcp230xx_int_timer;        // 718
   uint8_t       rgbwwTable[5];             // 71A
   uint8_t       user_template_base;        // 71F
-
+  
   char          user_template_name[15];    // 720  15 bytes - Backward compatibility since v8.2.0.3
 
 #ifdef ESP8266
@@ -570,8 +575,17 @@ struct {
   int16_t       windmeter_speed_factor;    // F3C
   uint8_t       windmeter_tele_pchange;    // F3E
 
-  uint8_t       free_f3f[121];             // F3F - Decrement if adding new Setting variables just above and below
-
+  #ifdef USE_HUBITAT
+    // Hubitat: Using some free space for Hubitat, make sure the size of Settings don't change!
+    uint8_t       free_f3f[68];           // F3F + 0x44
+    
+    // Hubitat: settings structure place holder for Hubitat settings
+    char          hubitat_host[33];        // F83 + 0x21
+    uint16_t      hubitat_port;            // FA4 + 0x2
+    uint8_t       free_fa6[18];            // FA6 + 0x12
+  #else
+    uint8_t       free_f3f[121];             // F3F - Decrement if adding new Setting variables just above and below
+  #endif
   // Only 32 bit boundary variables below
   uint16_t      pulse_counter_debounce_low;  // FB8
   uint16_t      pulse_counter_debounce_high; // FBA
