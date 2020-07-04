@@ -446,8 +446,8 @@
 #define USE_BUZZER                               // Add support for a buzzer (+0k6 code)
 #define USE_ARILUX_RF                            // Add support for Arilux RF remote controller (+0k8 code, 252 iram (non 2.3.0))
 // Hubitat: Disabling features not needed when running Hubitat
+#define USE_SHUTTER                              // Add Shutter support for up to 4 shutter with different motortypes (+11k code)
 #ifndef USE_HUBITAT
-  #define USE_SHUTTER                              // Add Shutter support for up to 4 shutter with different motortypes (+11k code)
   #define USE_DEEPSLEEP                            // Add support for deepsleep (+1k code)
 #endif
 #define USE_EXS_DIMMER                           // Add support for ES-Store WiFi Dimmer (+1k5 code)
