@@ -71,16 +71,16 @@ Examples :
 #undef  MQTT_PASS
 #define MQTT_PASS         "YourMqttPass"         // [MqttPassword] Optional password
 
-// -- Setup your own Hubitat settings  ---------------
-#ifdef USE_HUBITAT
-  #undef  HUBITAT_USE
-  #define HUBITAT_USE     true               // Select default Hubitat use (0 = Off, 1 = On)
+// -- Setup your own HttpHook settings  ---------------
+#ifdef USE_HTTPHOOK
+  #undef  HTTPHOOK_USE
+  #define HTTPHOOK_USE     true               // Select default HttpHook use (0 = Off, 1 = On)
   
-  #undef  HUBITAT_HOST
-  #define HUBITAT_HOST    ""              // [HubitatHost]
+  #undef  HTTPHOOK_HOST
+  #define HTTPHOOK_HOST    ""              // [HttpHookHost]
 
-  #undef  HUBITAT_PORT
-  #define HUBITAT_PORT    39501           // [HubitatPort] Hubitat port (39500 for SmartThings)
+  #undef  HTTPHOOK_PORT
+  #define HTTPHOOK_PORT    39501           // [HttpHookPort] HttpHook port (39500 for SmartThings)
 
   #define USE_EXPRESSION                         // Add support for expression evaluation in rules (+3k2 code, +64 bytes mem)
   #define SUPPORT_IF_STATEMENT                 // Add support for IF statement in rules (+4k2 code, -332 bytes mem)

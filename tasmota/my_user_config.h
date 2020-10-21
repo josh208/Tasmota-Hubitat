@@ -345,7 +345,7 @@
   // HttpHook: Default value text for the HttpHook host ip address
   #define HTTPHOOK_HOST           ""              // [HttpHookHost]
   // HttpHook: Default value text for the HttpHook host port number
-  #define HTTPHOOK_PORT           39501           // [HttpHookPort] HttpHook port (39500 for SmartThings)
+  #define HTTPHOOK_PORT           39501           // [HttpHookPort] HttpHook port
 #endif
 
 /*********************************************************************************************\

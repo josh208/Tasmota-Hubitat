@@ -734,7 +734,7 @@ const char HTTP_FORM_OTHER[] PROGMEM =
   "<label><input id='b1' type='checkbox'%s><b>" D_MQTT_ENABLE "</b></label><br>"
   #ifdef USE_HTTPHOOK
     // HttpHook: Additional button for HttpHook support
-    "<label><input id='h1' name='h1' type='checkbox'%s><b>" D_HTTPHOOK_SMARTTHINGS_ENABLE "</b></label><br/>"
+    "<label><input id='h1' name='h1' type='checkbox'%s><b>" D_HTTPHOOK_ENABLE "</b></label><br/>"
   #endif
   "<br>"
   "<label><b>" D_DEVICE_NAME "</b> (%s)</label><br><input id='dn' placeholder=\"\" value=\"%s\"><br>"
@@ -779,7 +779,7 @@ const char HTTP_COUNTER[] PROGMEM =
   "<br><div id='t' style='text-align:center;'></div>";
 
 const char HTTP_END[] PROGMEM =
-  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s " D_BY " Theo Arends & for HttpHook by markus-li</a></div>"
+  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s " D_BY " Theo Arends</a> & with <a href='https://oh-lalabs.com' target='_blank' style='color:#aaa;'>HttpHook by Oh-La Labs</a></div>"
   "</div>"
   "</body>"
   "</html>";

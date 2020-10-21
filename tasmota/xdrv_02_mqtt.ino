@@ -309,7 +309,7 @@ void MqttPublish(const char* topic, bool retained)
   snprintf_P(slog_type, sizeof(slog_type), PSTR(D_LOG_RESULT));
 
   #ifdef USE_HTTPHOOK
-    // HttpHook: Simple method to publish status to HttpHook. This can probably be done in the HttpHook driver, but doing it here for simplicity.
+    // HttpHook: Simple method to publish status to a HttpHook.
     // HttpHook: Due to the number of routes into this function, this is probably the cleanest location to put this call.
     if (Settings.flag4.httphook_enabled) {
       httphookPublish();

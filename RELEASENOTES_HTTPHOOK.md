@@ -4,7 +4,7 @@
 
 ## HttpHook support
 
-This fork adds HttpHook support to Tasmota. The original Hubitat fork of Tasmota (from which this HttpHook fork was derived) was created by erocm123 (https://github.com/erocm123/Sonoff-Tasmota) and all credit for that fork is his. markus-li (https://github.com/markus-li/Tasmota-HttpHook) have adapted it to newer versions of Tasmota and made major changes.
+This fork adds HttpHook support to Tasmota. The original Hubitat fork of Tasmota (from which this HttpHook fork was derived) was created by erocm123 (https://github.com/erocm123/Sonoff-Tasmota) and all credit for that fork is his. markus-li (https://github.com/markus-li/Tasmota-Hubitat) have adapted it to newer versions of Tasmota and made major changes.
 
 ## Fork maintenance
 

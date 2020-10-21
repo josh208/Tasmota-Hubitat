@@ -313,7 +313,7 @@
 #define D_MQTT_ENABLE "MQTT enable"
 #define D_MQTT_TLS_ENABLE "MQTT TLS"
 // HttpHook: Checkbox text for "Configure Other" page
-#define D_HTTPHOOK_SMARTTHINGS_ENABLE "HttpHook enable"
+#define D_HTTPHOOK_ENABLE "HttpHook enable"
 #define D_FRIENDLY_NAME "Friendly Name"
 #define D_BELKIN_WEMO "Belkin WeMo"
 #define D_HUE_BRIDGE "Hue Bridge"
