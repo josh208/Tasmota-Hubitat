@@ -927,9 +927,9 @@ void SettingsDefaultSet2(void)
   Settings.tele_period = TELE_PERIOD;
   Settings.mqttlog_level = MQTT_LOG_LEVEL;
 
-  // Hubitat
-  #ifdef USE_HUBITAT
-    flag4.hubitat_enabled = HUBITAT_USE;
+  // HttpHook
+  #ifdef USE_HTTPHOOK
+    flag4.httphook_enabled = HTTPHOOK_USE;
   #endif
 
   // Energy

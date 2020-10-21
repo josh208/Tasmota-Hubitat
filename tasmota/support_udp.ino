@@ -99,8 +99,8 @@ bool UdpConnect(void)
 #endif
     }
     if (!udp_connected) {     // if connection failed
-      #ifndef USE_HUBITAT
-        // Hubitat: suppressing log while working on Hubitat device discovery 
+      #ifndef USE_HTTPHOOK
+        // HttpHook: suppressing log while working on HttpHook device discovery 
         AddLog_P(LOG_LEVEL_INFO, PSTR(D_LOG_UPNP D_MULTICAST_JOIN_FAILED));
       #endif
       udp_connected = false;

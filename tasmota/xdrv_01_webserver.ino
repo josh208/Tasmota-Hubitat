@@ -732,9 +732,9 @@ const char HTTP_FORM_OTHER[] PROGMEM =
   "<label><b>" D_WEB_ADMIN_PASSWORD "</b><input type='checkbox' onclick='sp(\"wp\")'></label><br><input id='wp' type='password' placeholder=\"" D_WEB_ADMIN_PASSWORD "\" value=\"" D_ASTERISK_PWD "\"><br>"
   "<br>"
   "<label><input id='b1' type='checkbox'%s><b>" D_MQTT_ENABLE "</b></label><br>"
-  #ifdef USE_HUBITAT
-    // Hubitat: Additional button for Hubitat support
-    "<label><input id='h1' name='h1' type='checkbox'%s><b>" D_HUBITAT_SMARTTHINGS_ENABLE "</b></label><br/>"
+  #ifdef USE_HTTPHOOK
+    // HttpHook: Additional button for HttpHook support
+    "<label><input id='h1' name='h1' type='checkbox'%s><b>" D_HTTPHOOK_SMARTTHINGS_ENABLE "</b></label><br/>"
   #endif
   "<br>"
   "<label><b>" D_DEVICE_NAME "</b> (%s)</label><br><input id='dn' placeholder=\"\" value=\"%s\"><br>"
@@ -779,7 +779,7 @@ const char HTTP_COUNTER[] PROGMEM =
   "<br><div id='t' style='text-align:center;'></div>";
 
 const char HTTP_END[] PROGMEM =
-  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s " D_BY " Theo Arends & for Hubitat by markus-li</a></div>"
+  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s " D_BY " Theo Arends & for HttpHook by markus-li</a></div>"
   "</div>"
   "</body>"
   "</html>";
@@ -2337,8 +2337,8 @@ void HandleOtherConfiguration(void)
   strlcpy(stemp, mqtt_data, sizeof(stemp));  // Get JSON template
   WSContentSend_P(HTTP_FORM_OTHER, stemp, (USER_MODULE == Settings.module) ? " checked disabled" : "",
     (Settings.flag.mqtt_enabled) ? " checked" : "",   // SetOption3 - Enable MQTT
-#ifdef USE_HUBITAT
-    (Settings.flag4.hubitat_enabled) ? " checked" : "",  // SetOption113 - Enable Hubitat
+#ifdef USE_HTTPHOOK
+    (Settings.flag4.httphook_enabled) ? " checked" : "",  // SetOption113 - Enable HttpHook
 #endif
     SettingsText(SET_FRIENDLYNAME1), SettingsText(SET_DEVICENAME));
 
@@ -2395,9 +2395,9 @@ void OtherSaveSettings(void)
   WebGetArg("wp", tmp, sizeof(tmp));
   SettingsUpdateText(SET_WEBPWD, (!strlen(tmp)) ? "" : (strchr(tmp,'*')) ? SettingsText(SET_WEBPWD) : tmp);
   Settings.flag.mqtt_enabled = Webserver->hasArg("b1");  // SetOption3 - Enable MQTT
-  #ifdef USE_HUBITAT
-    // Hubitat: Saves the variable "true or false" of whether the user has enabled Hubitat support
-    Settings.flag4.hubitat_enabled = Webserver->hasArg("h1");
+  #ifdef USE_HTTPHOOK
+    // HttpHook: Saves the variable "true or false" of whether the user has enabled HttpHook support
+    Settings.flag4.httphook_enabled = Webserver->hasArg("h1");
   #endif
 #ifdef USE_EMULATION
   UdpDisconnect();

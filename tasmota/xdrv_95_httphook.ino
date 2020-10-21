@@ -1,9 +1,9 @@
 /*
-  xdrv_95_hubitat_smartthings.ino - Hubitat / SmartThings support for Sonoff-Tasmota
+  xdrv_95_httphook.ino - HttpHook support for Tasmota
 
   Copyright (C) 2019  Eric Maycock (erocm123)
   
-  Updated by Markus Liljergren (markus-li)
+  Copyright (C) 2020 Updated by Markus Liljergren (markus-li)
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -18,46 +18,47 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifdef USE_HUBITAT
+#ifdef USE_HTTPHOOK
 #define XDRV_95                95
 
 #include <ESP8266SSDP.h>
 
-unsigned long hubitatConnectionFailures;
-unsigned long hubitatFailureTimeout = millis();
+unsigned long httphookConnectionFailures;
+unsigned long httphookFailureTimeout = millis();
 
-enum HubitatCommands {
-  CMND_HUBITATHOST, CMND_HUBITATPORT };
-const char kHubitatCommands[] PROGMEM =
-  D_CMND_HUBITATHOST "|"
-  D_CMND_HUBITATPORT;
+enum HttpHookCommands {
+  CMND_HTTPHOOKHOST, CMND_HTTPHOOKPORT };
+const char kHttpHookCommands[] PROGMEM =
+  D_CMND_HTTPHOOKHOST "|"
+  D_CMND_HTTPHOOKPORT;
 
-int hubitat_command_code = 0;
+int httphook_command_code = 0;
 
-boolean hubitatPublish() {
+boolean httphookPublish() {
   boolean success = false;
-  if (String(Settings.hubitat_host) != "" && String(Settings.hubitat_port) != "") {
+  if (String(Settings.httphook_host) != "" && String(Settings.httphook_port) != "") {
     String authHeader = "";
     String message = "";
-    const char* host = Settings.hubitat_host;
-    int port = Settings.hubitat_port;
-    if (hubitatConnectionFailures >= 3) { // Too many errors; Trying not to get stuck
-      if (millis() - hubitatFailureTimeout < 1800000) {
+    const char* host = Settings.httphook_host;
+    int port = Settings.httphook_port;
+    if (httphookConnectionFailures >= 3) { // Too many errors; Trying not to get stuck
+      if (millis() - httphookFailureTimeout < 1800000) {
         return false;
       } else {
-        hubitatFailureTimeout = millis();
+        httphookFailureTimeout = millis();
       }
     }
     WiFiClient client;
     if (!client.connect(host, port))
     {
-      hubitatConnectionFailures++;
+      httphookConnectionFailures++;
       return false;
     }
-    if (hubitatConnectionFailures)
-      hubitatConnectionFailures = 0;
+    if (httphookConnectionFailures)
+      httphookConnectionFailures = 0;
 
-      String url = F("/");
+    // TODO: Add full custom URL support
+    String url = F("/");
 
     message = String(mqtt_data);
 
@@ -103,54 +104,54 @@ String deblank(const char* input)
 
 #ifdef USE_WEBSERVER
 
-#define WEB_HANDLE_HUBITAT "hs"
+#define WEB_HANDLE_HTTPHOOK "hs"
 
-const char S_CONFIGURE_HUBITAT[] PROGMEM = D_CONFIGURE_HUBITAT;
+const char S_CONFIGURE_HTTPHOOK[] PROGMEM = D_CONFIGURE_HTTPHOOK;
 
-const char HTTP_BTN_MENU_HUBITAT[] PROGMEM =
-  "<p><form action='" WEB_HANDLE_HUBITAT "' method='get'><button>" D_CONFIGURE_HUBITAT "</button></form></p>";
+const char HTTP_BTN_MENU_HTTPHOOK[] PROGMEM =
+  "<p><form action='" WEB_HANDLE_HTTPHOOK "' method='get'><button>" D_CONFIGURE_HTTPHOOK "</button></form></p>";
 
-const char HTTP_FORM_HUBITAT[] PROGMEM =
-  "<fieldset><legend><b>&nbsp;" D_HUBITAT_PARAMETERS "&nbsp;</b></legend>"
-  "<form method='get' action='" WEB_HANDLE_HUBITAT "'>"
-  "<br/><b>" D_HOST "</b> (" HUBITAT_HOST ")<br/><input id='mh' name='mh' placeholder='" HUBITAT_HOST" ' value='%s'><br/>"
-  "<br/><b>" D_PORT "</b> (" STR(HUBITAT_PORT) ")<br/><input id='ml' name='ml' placeholder='" STR(HUBITAT_PORT) "' value='%d'><br/>";
+const char HTTP_FORM_HTTPHOOK[] PROGMEM =
+  "<fieldset><legend><b>&nbsp;" D_HTTPHOOK_PARAMETERS "&nbsp;</b></legend>"
+  "<form method='get' action='" WEB_HANDLE_HTTPHOOK "'>"
+  "<br/><b>" D_HOST "</b> (" HTTPHOOK_HOST ")<br/><input id='mh' name='mh' placeholder='" HTTPHOOK_HOST" ' value='%s'><br/>"
+  "<br/><b>" D_PORT "</b> (" STR(HTTPHOOK_PORT) ")<br/><input id='ml' name='ml' placeholder='" STR(HTTPHOOK_PORT) "' value='%d'><br/>";
 
-void HandleHubitatConfiguration(void)
+void HandleHttpHookConfiguration(void)
 {
   if (!HttpCheckPriviledgedAccess()) { return; }
   
-  AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, S_CONFIGURE_HUBITAT);
+  AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, S_CONFIGURE_HTTPHOOK);
 
   if (Webserver->hasArg("save")) {
-    HubitatSaveSettings();
+    HttpHookSaveSettings();
     WebRestart(1);
     return;
   }
 
   char str[sizeof(Settings.ex_mqtt_client)];
 
-  WSContentStart_P(S_CONFIGURE_HUBITAT);
+  WSContentStart_P(S_CONFIGURE_HTTPHOOK);
   WSContentSendStyle();
-  WSContentSend_P(HTTP_FORM_HUBITAT,
-    Settings.hubitat_host,
-    Settings.hubitat_port);
+  WSContentSend_P(HTTP_FORM_HTTPHOOK,
+    Settings.httphook_host,
+    Settings.httphook_port);
  
   WSContentSend_P(HTTP_FORM_END);
   WSContentSpaceButton(BUTTON_CONFIGURATION);
   WSContentStop();
 }
 
-void HubitatSaveSettings(void)
+void HttpHookSaveSettings(void)
 {
   char tmp[100];
   char stemp[TOPSZ];
   char stemp2[TOPSZ];
 
   WebGetArg("mh", tmp, sizeof(tmp));
-  strlcpy(Settings.hubitat_host, (!strlen(tmp)) ? HUBITAT_HOST : (!strcmp(tmp,"0")) ? "" : tmp, sizeof(Settings.hubitat_host));
+  strlcpy(Settings.httphook_host, (!strlen(tmp)) ? HTTPHOOK_HOST : (!strcmp(tmp,"0")) ? "" : tmp, sizeof(Settings.httphook_host));
   WebGetArg("ml", tmp, sizeof(tmp));
-  Settings.hubitat_port = (!strlen(tmp)) ? HUBITAT_PORT : atoi(tmp);
+  Settings.httphook_port = (!strlen(tmp)) ? HTTPHOOK_PORT : atoi(tmp);
   // erocm123: Need to add logging
   //snprintf_P(log_data, sizeof(log_data), PSTR(D_LOG_MQTT D_CMND_MQTTHOST " %s, " D_CMND_MQTTPORT " %d, " D_CMND_MQTTCLIENT " %s, " D_CMND_MQTTUSER " %s, " D_CMND_TOPIC " %s, " D_CMND_FULLTOPIC " %s"),
   //  Settings.mqtt_host, Settings.mqtt_port, Settings.mqtt_client, Settings.mqtt_user, Settings.mqtt_topic, Settings.mqtt_fulltopic);
@@ -162,7 +163,7 @@ void HubitatSaveSettings(void)
  * Commands
 \*********************************************************************************************/
 
-boolean HubitatCommand(void)
+boolean HttpHookCommand(void)
 {
   char command [CMDSZ];
   char sunit[CMDSZ];
@@ -175,24 +176,24 @@ boolean HubitatCommand(void)
   int32_t payload = XdrvMailbox.payload;
   char *dataBuf = XdrvMailbox.data;
 
-  int command_code = GetCommandCode(command, sizeof(command), XdrvMailbox.topic, kHubitatCommands);
-  hubitat_command_code = command_code;
+  int command_code = GetCommandCode(command, sizeof(command), XdrvMailbox.topic, kHttpHookCommands);
+  httphook_command_code = command_code;
   if (-1 == command_code) {
     serviced = false;  // Unknown command
   }
-  else if (CMND_HUBITATHOST == command_code) {
-    if ((data_len > 0) && (data_len < sizeof(Settings.hubitat_host))) {
-      strlcpy(Settings.hubitat_host, (SC_CLEAR == Shortcut()) ? "" : (SC_DEFAULT == Shortcut()) ? HUBITAT_HOST : dataBuf, sizeof(Settings.hubitat_host));
+  else if (CMND_HTTPHOOKHOST == command_code) {
+    if ((data_len > 0) && (data_len < sizeof(Settings.httphook_host))) {
+      strlcpy(Settings.httphook_host, (SC_CLEAR == Shortcut()) ? "" : (SC_DEFAULT == Shortcut()) ? HTTPHOOK_HOST : dataBuf, sizeof(Settings.httphook_host));
       //restart_flag = 2;
     }
-    snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_SVALUE, command, Settings.hubitat_host);
+    snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_SVALUE, command, Settings.httphook_host);
   }
-  else if (CMND_HUBITATPORT == command_code) {
+  else if (CMND_HTTPHOOKPORT == command_code) {
     if (payload > 0) {
-      Settings.hubitat_port = (1 == payload) ? HUBITAT_PORT : payload;
+      Settings.httphook_port = (1 == payload) ? HTTPHOOK_PORT : payload;
       //restart_flag = 2;
     }
-    snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE, command, Settings.hubitat_port);
+    snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE, command, Settings.httphook_port);
   }
   else serviced = false;  // Unknown command
 
@@ -221,7 +222,7 @@ bool Xdrv95(uint8_t function)
 {
   bool result = false;
 
-  if (Settings.flag4.hubitat_enabled) {
+  if (Settings.flag4.httphook_enabled) {
     switch (function) {
 #ifdef USE_WEBSERVER
       case FUNC_INIT:
@@ -236,24 +237,24 @@ bool Xdrv95(uint8_t function)
         SSDP.setManufacturer("Smart Life Automated");
         SSDP.setManufacturerURL("http://smartlife.tech");
         SSDP.begin();
-        if (!strlen(Settings.hubitat_host)) {
-          strlcpy(Settings.hubitat_host, HUBITAT_HOST, sizeof(Settings.hubitat_host));
-          //Settings.hubitat_host = HUBITAT_HOST;
+        if (!strlen(Settings.httphook_host)) {
+          strlcpy(Settings.httphook_host, HTTPHOOK_HOST, sizeof(Settings.httphook_host));
+          //Settings.httphook_host = HTTPHOOK_HOST;
         }
-        if (!Settings.hubitat_port) {
-          Settings.hubitat_port = HUBITAT_PORT;
+        if (!Settings.httphook_port) {
+          Settings.httphook_port = HTTPHOOK_PORT;
         }
       break;
       case FUNC_LOOP:
         break;
       case FUNC_COMMAND:
-        result = HubitatCommand();
+        result = HttpHookCommand();
         break;
       case FUNC_WEB_ADD_BUTTON:
-        WSContentSend_P(HTTP_BTN_MENU_HUBITAT);
+        WSContentSend_P(HTTP_BTN_MENU_HTTPHOOK);
         break;
       case FUNC_WEB_ADD_HANDLER:
-        Webserver->on("/" WEB_HANDLE_HUBITAT, HandleHubitatConfiguration);
+        Webserver->on("/" WEB_HANDLE_HTTPHOOK, HandleHttpHookConfiguration);
         break;
 #endif  // USE_WEBSERVER
     }

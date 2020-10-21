@@ -113,7 +113,7 @@ void HueRespondToMSearch(void)
 /*********************************************************************************************\
  * Hue web server additions
 \*********************************************************************************************/
-// Hubitat: modified for Hubitat detection
+// HttpHook: modified for HttpHook detection
 //<?xml version="1.0"?><root xmlns="urn:schemas-upnp-org:device-1-0"><specVersion><major>1</major><minor>0</minor></specVersion><URLBase>http://{x1:80/</URLBase><device><deviceType>urn:schemas-upnp-org:device:Basic:1</deviceType><friendlyName>Amazon-Echo-HA-Bridge ({x1)</friendlyName><manufacturer>Royal Philips Electronics</manufacturer><manufacturerURL>http://www.philips.com</manufacturerURL><modelDescription>Philips hue Personal Wireless Lighting</modelDescription><modelName>Philips hue bridge 2012</modelName><modelNumber>929000226503</modelNumber><serialNumber>{x3</serialNumber><UDN>uuid:{x2</UDN></device></root>\r\n\r\n
 //Successfully compressed from 625 to 391 bytes (-37.4%)
 // const size_t HUE_DESCRIPTION_XML_size = 625;

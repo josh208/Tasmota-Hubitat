@@ -227,7 +227,7 @@ void setup(void) {
     snprintf_P(my_version, sizeof(my_version), PSTR("%s.%d"), my_version, VERSION & 0xff);
   }
   // Thehackbox inserts "release" or "commit number" before compiling using sed -i -e 's/PSTR("(%s)")/PSTR("(85cff52-%s)")/g' tasmota.ino
-  #ifdef USE_HUBITAT
+  #ifdef USE_HTTPHOOK
     snprintf_P(my_image, sizeof(my_image), PSTR("(%s-he)"), CODE_IMAGE_STR);  // Results in (85cff52-tasmota) or (release-tasmota)
   #else
     snprintf_P(my_image, sizeof(my_image), PSTR("(%s)"), CODE_IMAGE_STR);  // Results in (85cff52-tasmota) or (release-tasmota)

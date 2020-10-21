@@ -99,10 +99,10 @@
 
 // -- MQTT ----------------------------------------
 
-#ifndef USE_HUBITAT
+#ifndef USE_HTTPHOOK
   #define MQTT_USE               true              // [SetOption3] Select default MQTT use (false = Off, true = On)
 #else
-  #define MQTT_USE               false             // When using Hubitat this is a sensible default
+  #define MQTT_USE               false             // When using HttpHook this is a sensible default
 #endif
 
 #define MQTT_HOST              ""                // [MqttHost]
@@ -168,10 +168,10 @@
 #define WEB_SERVER             2                 // [WebServer] Web server (0 = Off, 1 = Start as User, 2 = Start as Admin)
 #define WEB_PASSWORD           ""                // [WebPassword] Web server Admin mode Password for WEB_USERNAME (empty string = Disable)
 #define FRIENDLY_NAME          "Tasmota"         // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
-#ifndef USE_HUBITAT
+#ifndef USE_HTTPHOOK
   #define EMULATION              EMUL_NONE         // [Emulation] Select Belkin WeMo (single relay/light) or Hue Bridge emulation (multi relay/light) (EMUL_NONE, EMUL_WEMO or EMUL_HUE)
 #else
-  #define EMULATION              EMUL_HUE          // [Emulation] This is needed for Hubitat device discovery
+  #define EMULATION              EMUL_HUE          // [Emulation] This is needed for HttpHook device discovery
 #endif
 #define EMULATION_HUE_1ST_GEN  false             // [Emulation] Force SetOption109 1 - if you only have Echo Dot 2nd gen devices
 #define CORS_DOMAIN            ""                // [Cors] CORS Domain for preflight requests
@@ -339,13 +339,13 @@
 #define ZIGBEE_RMV_ZBRECEIVED  false             // [SetOption100] Remove ZbReceived form JSON message
 #define ZIGBEE_INDEX_EP        false             // [SetOption101] Add the source endpoint as suffix to attributes, ex `Power3` instead of `Power` if sent from endpoint 3
 
-// -- Hubitat ---------------------------------
-#ifdef USE_HUBITAT
-  #define HUBITAT_USE            true               // Select default Hubitat use (0 = Off, 1 = On)
-  // Hubitat: Default value text for the Hubitat host ip address
-  #define HUBITAT_HOST           ""              // [HubitatHost]
-  // Hubitat: Default value text for the Hubitat host port number
-  #define HUBITAT_PORT           39501           // [HubitatPort] Hubitat port (39500 for SmartThings)
+// -- HttpHook ---------------------------------
+#ifdef USE_HTTPHOOK
+  #define HTTPHOOK_USE            true               // Select default HttpHook use (0 = Off, 1 = On)
+  // HttpHook: Default value text for the HttpHook host ip address
+  #define HTTPHOOK_HOST           ""              // [HttpHookHost]
+  // HttpHook: Default value text for the HttpHook host port number
+  #define HTTPHOOK_PORT           39501           // [HttpHookPort] HttpHook port (39500 for SmartThings)
 #endif
 
 /*********************************************************************************************\
@@ -396,8 +396,8 @@
 #define MQTT_CLEAN_SESSION     1                 // Mqtt clean session connection (0 = No clean session, 1 = Clean session (default))
 
 // -- MQTT - Domoticz -----------------------------
-// Hubitat: Disabling features not needed when running Hubitat
-#ifndef USE_HUBITAT                              
+// HttpHook: Disabling features not needed when running HttpHook
+#ifndef USE_HTTPHOOK                              
   #define USE_DOMOTICZ                             // Enable Domoticz (+6k code, +0.3k mem)
     #define DOMOTICZ_IN_TOPIC    "domoticz/in"     // Domoticz Input Topic
     #define DOMOTICZ_OUT_TOPIC   "domoticz/out"    // Domoticz Output Topic
@@ -428,8 +428,8 @@
 
 // -- KNX IP Protocol -----------------------------
 //#define USE_KNX                                  // Enable KNX IP Protocol Support (+9.4k code, +3k7 mem)
-// Hubitat: Disabling features not needed when running Hubitat
-#ifndef USE_HUBITAT                              
+// HttpHook: Disabling features not needed when running HttpHook
+#ifndef USE_HTTPHOOK                              
   #define USE_KNX_WEB_MENU                       // Enable KNX WEB MENU (+8.3k code, +144 mem)
 #endif
 
@@ -483,9 +483,9 @@
 #define USE_SONOFF_IFAN                          // Add support for Sonoff iFan02 and iFan03 (+2k code)
 #define USE_BUZZER                               // Add support for a buzzer (+0k6 code)
 #define USE_ARILUX_RF                            // Add support for Arilux RF remote controller (+0k8 code, 252 iram (non 2.3.0))
-// Hubitat: Disabling features not needed when running Hubitat
+// HttpHook: Disabling features not needed when running HttpHook
 #define USE_SHUTTER                              // Add Shutter support for up to 4 shutter with different motortypes (+11k code)
-#ifndef USE_HUBITAT
+#ifndef USE_HTTPHOOK
   #define USE_DEEPSLEEP                            // Add support for deepsleep (+1k code)
 #endif
 #define USE_EXS_DIMMER                           // Add support for ES-Store WiFi Dimmer (+1k5 code)

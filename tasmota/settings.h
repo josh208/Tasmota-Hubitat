@@ -132,9 +132,9 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t zb_disable_autobind : 1;      // bit 28 (v8.5.0.1)  - SetOption110 - disable Zigbee auto-config when pairing new devices
     uint32_t buzzer_freq_mode : 1;         // bit 29 (v8.5.0.1)  - SetOption111 - Use frequency output for buzzer pin instead of on/off signal
     uint32_t zb_topic_fname : 1;           // bit 30 (v8.5.0.1)  - SetOption112 - Use friendly name in zigbee topic (use with SetOption89)
-    #ifdef USE_HUBITAT
-      // Hubitat: Variable to specify whether Hubitat is enabled. Choosing last spare in case Tasmota adds more variables.
-      uint32_t hubitat_enabled : 1;
+    #ifdef USE_HTTPHOOK
+      // HttpHook: Variable to specify whether HttpHook is enabled. Choosing last spare in case Tasmota adds more variables.
+      uint32_t httphook_enabled : 1;
     #else
       uint32_t spare31 : 1;
     #endif
@@ -618,13 +618,13 @@ struct {
   uint16_t      energy_power_delta[3];     // F44
   uint16_t      shutter_pwmrange[2][MAX_SHUTTERS];  // F4A
 
-  #ifdef USE_HUBITAT
-    // Hubitat: Using some free space for Hubitat, make sure the size of Settings don't change!
+  #ifdef USE_HTTPHOOK
+    // HttpHook: Using some free space for HttpHook, make sure the size of Settings don't change!
     uint8_t       free_f5a[41];           // F5A + 0x29
     
-    // Hubitat: settings structure place holder for Hubitat settings
-    char          hubitat_host[33];        // F83 + 0x21
-    uint16_t      hubitat_port;            // FA4 + 0x2
+    // HttpHook: settings structure place holder for HttpHook settings
+    char          httphook_host[33];        // F83 + 0x21
+    uint16_t      httphook_port;            // FA4 + 0x2
     uint8_t       free_fa6[13];            // FA6 + 0xD
   #else
     uint8_t       free_f5a[89];             // F5A - Decrement if adding new Setting variables just above and below
