@@ -94,7 +94,19 @@
 #define MQTT_LOG_LEVEL         LOG_LEVEL_NONE    // [MqttLog] (LOG_LEVEL_NONE, LOG_LEVEL_ERROR, LOG_LEVEL_INFO, LOG_LEVEL_DEBUG, LOG_LEVEL_DEBUG_MORE)
 
 // -- Ota -----------------------------------------
-#define OTA_URL                "http://ota.tasmota.com/tasmota/release/tasmota.bin"  // [OtaUrl]
+#ifdef USE_HTTPHOOK
+  #ifdef FIRMWARE_SENSORS
+    #define OTA_URL                "http://ota.oh-lalabs.com/tasmota/release/tasmota-sensors-httphook.bin"  // [OtaUrl]
+  #elif FIRMWARE_IR
+    #define OTA_URL                "http://ota.oh-lalabs.com/tasmota/release/tasmota-ir-httphook.bin"  // [OtaUrl]
+  #elif USE_RF_FLASH
+    #define OTA_URL                "http://ota.oh-lalabs.com/tasmota/release/tasmota-rf-httphook.bin"  // [OtaUrl]
+  #else
+    #define OTA_URL                "http://ota.oh-lalabs.com/tasmota/release/tasmota-httphook.bin"  // [OtaUrl]
+  #endif
+#else
+  #define OTA_URL                "http://ota.oh-lalabs.com/tasmota/release/tasmota-httphook.bin"  // [OtaUrl]
+#endif
 #define OTA_COMPATIBILITY      false             // [SetOption78] Disable OTA compatibility check
 
 // -- MQTT ----------------------------------------

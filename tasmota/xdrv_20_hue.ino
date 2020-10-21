@@ -148,7 +148,8 @@ const char HUE_DESCRIPTION_XML[] PROGMEM =
   "<URLBase>http://{x1:80/</URLBase>"
   "<device>"
     "<deviceType>urn:schemas-upnp-org:device:Basic:1</deviceType>"
-    "<friendlyName>Amazon-Echo-HA-Bridge ({x1)</friendlyName>"
+    "<friendlyName>{x4</friendlyName>"
+//    "<friendlyName>Amazon-Echo-HA-Bridge ({x1)</friendlyName>"
 //    "<friendlyName>Philips hue ({x1)</friendlyName>"
     "<manufacturer>Royal Philips Electronics</manufacturer>"
     "<manufacturerURL>http://www.philips.com</manufacturerURL>"
@@ -263,6 +264,7 @@ void HandleUpnpSetupHue(void)
   description_xml.replace("{x1", WiFi.localIP().toString());
   description_xml.replace("{x2", HueUuid());
   description_xml.replace("{x3", HueSerialnumber());
+  description_xml.replace("{x4", ModuleName().c_str()?ModuleName().c_str():"Tasmota");
   WSSend(200, CT_XML, description_xml);
 }
 
