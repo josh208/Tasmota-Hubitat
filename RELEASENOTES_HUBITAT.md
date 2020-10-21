@@ -8,23 +8,29 @@ This fork adds Hubitat support to Tasmota. The original Hubitat fork of Tasmota 
 
 ## Fork maintenance
 
-To keep this fork in-sync with the original Tasmota, firstly the Hubitat changes are kept in its own branch and then "git rebase master" is used against the original Tasmota.
+To keep this fork in-sync with the original Tasmota, firstly the Hubitat changes are kept in its own branch and then "git merge master" is used against the original Tasmota.
 
 Commands used:
 git fetch upstream
-git rebase [branch-name]
+git merge upstream/[remote-branch-name] master
 
 ## Changelog
 
 For the complete Changelog, see RELEASENOTES.md.
 
+### Version 8.5.1 Hannah (HTTP Hook related changes)
+
+- Expanded the Hubitat support into HTTP Hook support
+
 ### Version 8.1.0 Doris (Hubitat related changes)
+
 - Added Hubitat support
 
 ### Version 7.2.0 Constance (Hubitat related changes)
+
 - Added Hubitat support
 
 ### Version 7.1.0 Betty (Hubitat related changes)
 
- - Added RELEASENOTES_HUBITAT.md
- - Added Hubitat support
+- Added RELEASENOTES_HUBITAT.md
+- Added Hubitat support
